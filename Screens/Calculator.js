@@ -73,9 +73,9 @@ export default function Home({ navigation }) {
             keyboardType="number-pad"
             onChangeText={onChangeKn}
             value={input.kuna ? input.kuna : ""}
-            placeholder="KN"
+            placeholder="0"
           />
-          <Text style={styles.marko}>KN</Text>
+          <Text style={{ fontSize: 30 }}>KN</Text>
         </SafeAreaView>
         <SafeAreaView style={styles.inputBorder}>
           <TextInput
@@ -83,9 +83,9 @@ export default function Home({ navigation }) {
             keyboardType="number-pad"
             onChangeText={onChangeEur}
             value={input.euro ? input.euro : ""}
-            placeholder="EUR"
+            placeholder="0"
           />
-          {/* <Text style={styles.marko}>EUR </Text> */}
+          <Text style={{ fontSize: 30 }}>EUR </Text>
         </SafeAreaView>
       </View>
       <View style={styles.container}>
@@ -101,7 +101,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     flexDirection: "row",
   },
-  textStyle: {},
   marko: {
     height: 40,
     width: 180,
