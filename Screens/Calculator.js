@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../Firebase/firebase.js";
 import {
   Button,
@@ -7,11 +5,12 @@ import {
   View,
   SafeAreaView,
   StyleSheet,
-  TextInput,
+  TouchableOpacity,
 } from "react-native";
+import { useState } from "react";
+import { evaluate } from "mathjs";
 
 export default function Home({ navigation }) {
-  let [input, setInput] = useState({ kuna: 0, euro: 0 });
   //   let dataX;
   //   const getData = async () => {
   //     // citanje određenog dokumenta
@@ -32,83 +31,120 @@ export default function Home({ navigation }) {
   //     getData();
   //   }, []);
 
-  function onChangeEur(enterdText) {
-    if (enterdText != "") {
-      setInput({
-        kuna: (parseInt(enterdText) / 7.5345).toFixed(2),
-        euro: enterdText,
-      });
-    } else {
-      setInput({
-        kuna: 0,
-        euro: enterdText,
-      });
-    }
+  const [result, setResoult] = useState();
+  const [view, setView] = useState("");
+
+  function HandleTap(enterdText) {
+    setView(view + enterdText);
   }
-  function onChangeKn(enterdText) {
-    if (enterdText != "") {
-      setInput({
-        kuna: enterdText,
-        euro: (parseInt(enterdText) * 7.5345).toFixed(2),
-      });
-    } else {
-      setInput({
-        kuna: 0,
-        euro: enterdText,
-      });
-    }
+
+  function HandleResult() {
+    let rez = evaluate(view);
+    setResoult(rez);
   }
+
+  function HandleClear() {
+    setResoult("");
+    setView("");
+  }
+
   return (
-    <View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          borderColor: "red",
-        }}
-      >
-        <SafeAreaView style={styles.inputBorder}>
-          <TextInput
-            style={styles.marko}
-            keyboardType="number-pad"
-            onChangeText={onChangeKn}
-            value={input.kuna ? input.kuna : ""}
-            placeholder="0"
-          />
-          <Text style={{ fontSize: 30 }}>KN</Text>
-        </SafeAreaView>
-        <SafeAreaView style={styles.inputBorder}>
-          <TextInput
-            style={styles.marko}
-            keyboardType="number-pad"
-            onChangeText={onChangeEur}
-            value={input.euro ? input.euro : ""}
-            placeholder="0"
-          />
-          <Text style={{ fontSize: 30 }}>EUR </Text>
-        </SafeAreaView>
-      </View>
-      <View style={styles.container}>
-        <Text>Marko</Text>
-        <Text>Marko</Text>
-      </View>
+    <View style={styles.container}>
+      <Button
+        title="Go to Converter"
+        onPress={() => navigation.navigate("Converter")}
+      />
+      <Button
+        title="Go to gridTest"
+        onPress={() => navigation.navigate("GridTest")}
+      />
+      <SafeAreaView>
+        <Text style={styles.value}>{view}</Text>
+
+        <View style={styles.stupac}>
+          <TouchableOpacity onPress={() => HandleClear()}>
+            <Text>My button</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              height: "100%",
+              marginTop: 10,
+              backgroundColor: "red",
+            }}
+            onPress={() => HandleClear()}
+          >
+            <Text>My button</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ height: "100%", marginTop: 10, backgroundColor: "red" }}
+            onPress={() => HandleClear()}
+          >
+            <Text>My button</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{ height: "100%", marginTop: 10, backgroundColor: "red" }}
+            onPress={() => HandleClear()}
+          >
+            <Text>My button</Text>
+          </TouchableOpacity>
+        </View>
+
+        <Text style={styles.value}>{result}</Text>
+        <View style={styles.stupac}>
+          <Button title="C" onPress={() => HandleClear()} />
+          <Button title="+/-" onPress={() => HandleTap(6)} />
+          <Button title="%" onPress={() => HandleTap("%")} />
+          <Button title="/" onPress={() => HandleTap("/")} />
+        </View>
+
+        {/* Number */}
+        <View style={styles.stupac}>
+          <Button title="7" onPress={() => HandleTap(7)} />
+          <Button title="8" onPress={() => HandleTap(8)} />
+          <Button title="9" onPress={() => HandleTap(9)} />
+          <Button title="X" onPress={() => HandleTap("*")} />
+        </View>
+
+        <View style={styles.stupac}>
+          <Button title="5" onPress={() => HandleTap(5)} />
+          <Button title="6" onPress={() => HandleTap(6)} />
+          <Button title="4" onPress={() => HandleTap(4)} />
+          <Button title="-" onPress={() => HandleTap("-")} />
+        </View>
+
+        <View style={styles.stupac}>
+          <Button title="1" onPress={() => HandleTap(1)} />
+          <Button title="2" onPress={() => HandleTap(2)} />
+          <Button title="3" onPress={() => HandleTap(3)} />
+          <Button title="+" onPress={() => HandleTap("+")} />
+        </View>
+
+        <View style={styles.stupac}>
+          <Button title="0" onPress={() => HandleTap(0)} />
+          <Button title="." onPress={() => HandleTap(".")} />
+          <Button title="=" onPress={() => HandleResult()} />
+        </View>
+      </SafeAreaView>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
-  inputBorder: {
-    borderRadius: 10,
-    borderWidth: 2,
-    flexDirection: "row",
-  },
-  marko: {
-    height: 40,
-    width: 180,
-    fontSize: 30,
-  },
   container: {
     flex: 1,
-    backgroundColor: "blue",
-    justifyContent: "flex-end",
+    backgroundColor: "#202020",
+    justifyContent: "center",
+  },
+  value: {
+    color: "#fff",
+    fontSize: 42,
+    titleAlign: "right",
+    marginRight: 30,
+    marginBottom: 20,
+  },
+  stupac: {
+    flexDirection: "row",
+    padnig: 5,
+    justifyContent: "space-between",
   },
 });

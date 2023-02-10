@@ -1,8 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
 import Calculator from "./Screens/Calculator.js";
+import GridTest from "./Screens/GridTest.js";
 // import React, { useState } from "react";
-import SecondPage from "./Screens/SecondPage.js";
+import Converter from "./Screens/Converter.js";
 import { doc, collection, getDoc, getDocs } from "firebase/firestore";
 import { db } from "./Firebase/firebase.js";
 import { useState } from "react";
@@ -38,7 +39,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Calculator" component={Calculator} />
-        <Stack.Screen name="SecondPage" component={SecondPage} />
+        <Stack.Screen name="Converter" component={Converter} />
+        <Stack.Screen name="GridTest" component={GridTest} />
       </Stack.Navigator>
     </NavigationContainer>
   );
